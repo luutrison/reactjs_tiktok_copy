@@ -1,0 +1,214 @@
+$propsContent: "colorPrimary", "backgroundPrimary", "boxshadowPrimary",
+  "borderPrimary", "outlinePrimary";
+$primary: (
+  primary_md: #00ff91,
+  primary_lightBlue: #00e5ff,
+  primary_goodRed: #ff0000,
+  primary_dark: #ffffff,
+);
+$primaryPercent: 100, 90, 80, 70, 60, 50, 40, 30, 20, 10;
+
+$color-1: #eeeeee;
+$color-2: #191818;
+
+@mixin stateProperties {
+  &.hide,
+  .hide {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+  }
+  &.show,
+  .show {
+    display: inherit;
+    visibility: inherit;
+    opacity: inherit;
+  }
+}
+
+@mixin components($color, $percent) {
+  
+}
+
+@mixin SameProperties {
+  @include stateProperties;
+
+  &.radiusMd,
+  .radiusMd {
+    border-radius: 10px;
+  }
+  &.colorBlack,
+  .colorBlack {
+    color: $color-2 !important;
+  }
+
+  &.colorWhite,
+  .colorWhite {
+    color: $color-1 !important;
+  }
+
+  &.normalText,
+  .normalText {
+    text-decoration: none;
+    text-transform: none;
+    color: inherit;
+    &:hover,
+    &:active,
+    &:focus {
+      text-decoration: none;
+      text-transform: none;
+      color: inherit;
+    }
+  }
+
+  @each $name, $prop in $primary {
+    &.#{$name} {
+      @each $i in $propsContent {
+        @each $p in $primaryPercent {
+          $colorMap: mix($prop, black, $p);
+          @if $i == "boxshadowPrimary" {
+            .#{$i}#{$p},
+            &.#{$i}#{$p} {
+              box-shadow: 0px 0px 1px 1px $colorMap;
+            }
+          } @else if $i == "borderPrimary" {
+            .#{$i}#{$p},
+            &.#{$i}#{$p} {
+              border: solid 1px $colorMap;
+            }
+          } @else if $i == "outlinePrimary" {
+            .#{$i}#{$p},
+            &.#{$i}#{$p} {
+              outline: solid 1px $colorMap;
+            }
+          } @else if $i == "backgroundPrimary" {
+            .#{$i}#{$p},
+            &.#{$i}#{$p} {
+              background: $colorMap;
+            }
+          } @else if $i == "colorPrimary" {
+            .#{$i}#{$p},
+            &.#{$i}#{$p} {
+              color: $colorMap;
+            }
+          }
+          @include components($colorMap, $p);
+        }
+      }
+    }
+  }
+}
+
+@mixin customColor(
+  $maublur,
+  $blplus,
+  $cl1,
+  $cl2,
+  $cl3,
+  $backgroundColorList,
+  $menuBackground
+) {
+  &.colorMd,
+  .colorMd {
+    color: #{$cl1};
+  }
+  &.invertColor,
+  .invertColor {
+    color: #{$cl2};
+  }
+  &.blurBackground,
+  .blurBackground {
+    background: $maublur;
+  }
+
+  &.menuBackground,
+  .menuBackground {
+    background: $menuBackground;
+  }
+
+  &.blurColor,
+  .blurColor {
+    color: $blplus;
+  }
+
+  &.boxshadowSlim,
+  .boxshadowSlim {
+    box-shadow: 0px 0px 1px 1px $cl3;
+  }
+
+  @each $name, $prop in $backgroundColorList {
+    .#{$name} {
+      background: #{$prop};
+    }
+  }
+}
+
+.normal {
+  $maublur: #dedede;
+  $maublurplus: #939393;
+  $shadowSlim: #cccccc;
+  $menuBackground: rgb(250, 250, 250);
+
+  $backgroundColorList: (
+    "backgroundTop": #ffffff,
+    "backgroundMid": #fcfcfc,
+    "backgroundBot": #f8f8f8,
+  );
+
+  .background,
+  &.background {
+    background: white;
+  }
+
+  .color,
+  &.color {
+    color: $color-2;
+  }
+
+  @include SameProperties;
+
+  @include customColor(
+    $maublur,
+    $maublurplus,
+    $color-2,
+    $color-1,
+    $shadowSlim,
+    $backgroundColorList,
+    $menuBackground
+  );
+}
+
+.dark {
+  $maublur: rgb(33, 33, 33);
+  $shadowSlim: #000000;
+  $maublurplus: rgb(73, 73, 73);
+  $menuBackground: rgb(46, 46, 46);
+
+  $backgroundColorList: (
+    "backgroundTop": rgb(8, 8, 8),
+    "backgroundMid": rgb(20, 20, 20),
+    "backgroundBot": rgb(28, 28, 28),
+  );
+
+  @include SameProperties;
+
+  .background,
+  &.background {
+    background: rgb(20, 20, 20);
+  }
+
+  .color,
+  &.color {
+    color: $color-1;
+  }
+
+  @include customColor(
+    $maublur,
+    $maublurplus,
+    $color-1,
+    $color-2,
+    $shadowSlim,
+    $backgroundColorList,
+    $menuBackground
+  );
+}
